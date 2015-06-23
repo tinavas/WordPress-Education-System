@@ -1,0 +1,78 @@
+.wpems-tab-content {
+  padding: 10px;
+}
+
+.wpems-hide {
+    display: none;
+}
+
+#wpems-teacher-wrapper {
+    background: #fff;
+    padding:30px;
+    height: auto;
+}
+
+#wpems-teacher-wrapper .wpems-profile-image-upload {
+  border: 4px dashed #DDDDDD;
+  height: 200px;
+  width: 200px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  position: relative;
+}
+#wpems-teacher-wrapper .wpems-profile-image-upload .instruction-inside {
+    text-align: center;
+    margin-top: 25px;
+}
+#wpems-teacher-wrapper .wpems-profile-image-upload i.fa-cloud-upload {
+  display: block;
+  font-size: 80px;
+  color: #DFDFDF;
+}
+#wpems-teacher-wrapper .wpems-profile-image-upload a.close {
+  background: #000000;
+  color: #FF0000;
+  font-size: 100px;
+  height: 100%;
+  opacity: 0.7;
+  padding: 45% 0;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  text-shadow: none;
+  top: 0;
+  width: 100%;
+  display: none;
+  cursor: pointer;
+}
+#wpems-teacher-wrapper .wpems-profile-image-upload img {
+  max-width: 100%;
+  width: 200px;
+  height: 200px;
+}
+#wpems-teacher-wrapper .wpems-profile-image-upload img:hover a.close {
+  display: block;
+}
+#wpems-teacher-wrapper .wpems-profile-image-upload .image-wrap:hover a.close {
+  display: block;
+}
+
+.wpems_pagination ul li{
+  list-style: none;
+  display: inline-block;
+}
+
+.wpems_pagination ul li a{
+  padding: 4px 8px;
+  background-color: #ddd;
+  text-decoration: none;
+}
+
+.wpems_pagination ul li .dots {
+  background-color: none
+}
+
+.wpems_pagination ul li span.current{
+  padding: 4px 8px;
+  background-color: #fafafa;
+}

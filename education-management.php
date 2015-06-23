@@ -38,6 +38,37 @@ License: GPL2
 // don't call the file directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
+define( 'WP_EMS_DIR', dirname(__FILE__) );
+define( 'WP_EMS_PLUGIN_URI', plugins_url( '', __FILE__ ) );
+define( 'WP_EMS_INC_DIR', WP_EMS_DIR . '/includes' );
+define( 'WP_EMS_LIB_DIR', WP_EMS_DIR . '/libs' );
+define( 'WP_EMS_VIEW_DIR', WP_EMS_DIR . '/views' );
+
+
+/**
+ * Autoload class files on demand
+ *
+ * `WPUF_Form_Posting` becomes => form-posting.php
+ * `WPUF_Dashboard` becomes => dashboard.php
+ *
+ * @param string $class requested class name
+ */
+function wp_ems_autoload( $class ) {
+
+    if ( stripos( $class, 'WPEMS_' ) !== false ) {
+
+        $class_name = str_replace( array('WPEMS_', '_'), array('', '-'), $class );
+        $filename = dirname( __FILE__ ) . '/classes/' . strtolower( $class_name ) . '.php';
+
+        if ( file_exists( $filename ) ) {
+            require_once $filename;
+        }
+    }
+}
+
+spl_autoload_register( 'wp_ems_autoload' );
+
+
 /**
  * WP_Education_Management class
  *
@@ -51,8 +82,6 @@ class WP_Education_Management {
      * Sets up all the appropriate hooks and actions
      * within our plugin.
      *
-     * @uses register_activation_hook()
-     * @uses register_deactivation_hook()
      * @uses is_admin()
      * @uses add_action()
      */
@@ -85,8 +114,13 @@ class WP_Education_Management {
      *
      * Nothing being called here yet.
      */
-    public function activate() {
+    public static function activate() {
 
+        require_once WP_EMS_INC_DIR . '/wpems-db.php';
+
+        add_role( 'student', 'Student' , array( 'read' => true ) );
+        add_role( 'teacher', 'Teacher' , array( 'read' => true ) );
+        add_role( 'parent', 'Parent' , array( 'read' => true ) );
     }
 
     /**
@@ -94,7 +128,7 @@ class WP_Education_Management {
      *
      * Nothing being called here yet.
      */
-    public function deactivate() {
+    public static function deactivate() {
 
     }
 
@@ -106,7 +140,6 @@ class WP_Education_Management {
      * @return void
      */
     public function define() {
-
     }
 
     /**
@@ -117,7 +150,9 @@ class WP_Education_Management {
      * @return void
      */
     public function includes() {
-
+        require_once WP_EMS_INC_DIR . '/urls.php';
+        require_once WP_EMS_INC_DIR . '/functions.php';
+        require_once WP_EMS_INC_DIR . '/users-helper.php';
     }
 
     /**
@@ -129,6 +164,12 @@ class WP_Education_Management {
      */
     public function inistantiate() {
 
+        if ( is_admin() ) {
+            WPEMS_Admin::init();
+            WPEMS_Teachers::init();
+            WPEMS_Users::init();
+            WPEMS_Class::init();
+        }
     }
 
     /**
@@ -142,6 +183,7 @@ class WP_Education_Management {
 
         add_action( 'init', array( $this, 'localization_setup' ) );
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
     }
 
@@ -178,8 +220,12 @@ class WP_Education_Management {
      */
     public function enqueue_scripts() {
 
-        wp_enqueue_style( 'wp-ems-styles', plugins_url( 'assets/css/style.css', __FILE__ ), false, date( 'Ymd' ) );
-        wp_enqueue_script( 'wp-ems-scripts', plugins_url( 'assets/js/script.js', __FILE__ ), array( 'jquery' ), false, true );
+        // wp_enqueue_style( 'wp-ems-styles', plugins_url( 'assets/css/style.css', __FILE__ ), false, date( 'Ymd' ) );
+        // wp_enqueue_style( 'wp-ems-magnific-popup-styles', plugins_url( 'assets/css/magnific-popup.css', __FILE__ ), false, date( 'Ymd' ) );
+
+        // wp_enqueue_script( 'wp-ems-magnific-popup-scripts', plugins_url( 'assets/js/jquery.magnific-popup.min.js', __FILE__ ), array( 'jquery' ), false, true );
+        // wp_enqueue_script( 'wp-ems-scripts', plugins_url( 'assets/js/script.js', __FILE__ ), array( 'jquery' ), false, true );
+        // wp_enqueue_script( 'wp-ems-teachers-scripts', plugins_url( 'assets/js/teachers.js', __FILE__ ), array( 'jquery' ), false, true );
 
         /**
          * Example for setting up text strings from Javascript files for localization
@@ -190,9 +236,26 @@ class WP_Education_Management {
         // wp_localize_script( 'base-plugin-scripts', 'wp-ems', $translation_array ) );
     }
 
+    public function admin_enqueue_scripts() {
+
+        wp_register_style('jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css');
+        wp_enqueue_style( 'jquery-ui' );
+        wp_enqueue_style( 'wpems-font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css', false, date( 'Ymd' ) );
+
+        wp_enqueue_media();
+        wp_enqueue_style( 'wp-ems-magnific-popup-styles', plugins_url( 'assets/css/magnific-popup.css', __FILE__ ), false, date( 'Ymd' ) );
+        wp_enqueue_style( 'wp-ems-bootstrap', plugins_url( 'assets/css/bootstrap.css', __FILE__ ), false, date( 'Ymd' ) );
+        wp_enqueue_style( 'wp-ems-style', plugins_url( 'assets/css/style.css', __FILE__ ), false, date( 'Ymd' ) );
+
+        wp_enqueue_script( 'wp-ems-magnific-popup-scripts', plugins_url( 'assets/js/jquery.magnific-popup.min.js', __FILE__ ), array( 'jquery' ), false, true );
+        wp_enqueue_script( 'wp-ems-scripts', plugins_url( 'assets/js/script.js', __FILE__ ), array( 'jquery' ), false, true );
+        wp_enqueue_script( 'wp-ems-teachers-scripts', plugins_url( 'assets/js/teachers.js', __FILE__ ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker' ), false, true );
+
+    }
+
 } // WP_Education_Management
 
-function dokan_load_plugin() {
+function wp_ems_load_plugin() {
     $wp_ems = WP_Education_Management::init();
 }
 
