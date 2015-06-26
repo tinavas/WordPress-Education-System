@@ -43,6 +43,7 @@ class WPEMS_Admin {
         add_menu_page( __( 'WP School Mangement', 'wp-ems' ), __( 'School', 'wp-ems' ), $capability, 'wpems-admin-opt', array( $this, 'adming_page_handle' ), 'dashicons-awards', 55 );
         add_submenu_page( 'wpems-admin-opt', __( 'Teachers', 'wp-ems' ), __( 'Teachers', 'wp-ems' ), $capability, 'wpems-teachers', array( $this, 'load_teachers_views') );
         add_submenu_page( 'wpems-admin-opt', __( 'Class', 'wp-ems' ), __( 'Class', 'wp-ems' ), $capability, 'wpems-class', array( $this, 'load_class_views') );
+        add_submenu_page( 'wpems-admin-opt', __( 'Subject', 'wp-ems' ), __( 'Subject', 'wp-ems' ), $capability, 'wpems-subject', array( $this, 'load_subject_views') );
 
     }
 
@@ -75,15 +76,25 @@ class WPEMS_Admin {
         ?>
         <div class="wpems-tab-content">
             <?php if ( isset( $_GET['tab'] ) && $_GET['tab'] == 'class' ): ?>
+
                 <?php if ( isset( $_GET['action'] ) && ( $_GET['action'] == 'new' || $_GET['action'] == 'edit' ) ) : ?>
                     <?php require_once WP_EMS_VIEW_DIR . '/class/new-class.php'; ?>
                 <?php else: ?>
                     <?php require_once WP_EMS_VIEW_DIR . '/class/class.php'; ?>
                 <?php endif ?>
+
             <?php elseif ( isset( $_GET['tab'] ) && $_GET['tab'] == 'sections' ): ?>
-                <?php require_once WP_EMS_VIEW_DIR . '/class/section.php'; ?>
+
+                <?php if ( isset( $_GET['action'] ) && ( $_GET['action'] == 'new' || $_GET['action'] == 'edit' ) ) : ?>
+                    <?php require_once WP_EMS_VIEW_DIR . '/section/new-section.php'; ?>
+                <?php else: ?>
+                    <?php require_once WP_EMS_VIEW_DIR . '/section/section.php'; ?>
+                <?php endif ?>
+
             <?php else: ?>
+
                 <?php require_once WP_EMS_VIEW_DIR . '/class/class.php'; ?>
+
             <?php endif ?>
 
         </div>
@@ -98,5 +109,15 @@ class WPEMS_Admin {
         );
 
         return apply_filters( 'wpems_class_tabs', $tabs );
+    }
+
+    public function load_subject_views() {
+        $actions = isset( $_GET['action'] ) ? $_GET['action'] : '';
+
+        if ( $actions == 'new' || $actions == 'edit' ) {
+            require_once WP_EMS_VIEW_DIR . '/subject/new-subject.php';
+        } else {
+            require_once WP_EMS_VIEW_DIR . '/subject/subject.php';
+        }
     }
 }

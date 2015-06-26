@@ -169,6 +169,8 @@ class WP_Education_Management {
             WPEMS_Teachers::init();
             WPEMS_Users::init();
             WPEMS_Class::init();
+            WPEMS_Section::init();
+            WPEMS_Subject::init();
         }
     }
 

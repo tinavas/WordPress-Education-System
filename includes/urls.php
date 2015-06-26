@@ -36,3 +36,24 @@ function wpems_edit_class_url() {
     return apply_filters( 'wpems_edit_class_url',  sprintf( '%s?page=wpems-class&tab=class&action=edit', admin_url( 'admin.php' ) ) );
 }
 
+function wpems_add_new_section_url() {
+    return apply_filters( 'wpems_add_new_class_url',  sprintf( '%s?page=wpems-class&tab=sections&action=new', admin_url( 'admin.php' ) ) );
+}
+
+function wpems_edit_section_url() {
+    return apply_filters( 'wpems_add_new_class_url',  sprintf( '%s?page=wpems-class&tab=sections&action=edit', admin_url( 'admin.php' ) ) );
+}
+
+function wpems_subject_tab_url() {
+    return apply_filters( 'wpems_subject_tab_url',  sprintf( '%s?page=wpems-subject', admin_url( 'admin.php' ) ) );
+}
+
+function wpems_add_new_subject_url() {
+    return apply_filters( 'wpems_add_new_subject_url',  sprintf( '%s?page=wpems-subject&action=new', admin_url( 'admin.php' ) ) );
+}
+
+function wpems_edit_subject_url() {
+    return apply_filters( 'wpems_edit_subject_url',  sprintf( '%s?page=wpems-subject&action=edit', admin_url( 'admin.php' ) ) );
+}
+
+
