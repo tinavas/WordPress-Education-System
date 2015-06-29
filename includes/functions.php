@@ -33,3 +33,54 @@ function wpems_get_profile_avatar( $user_id ) {
 
     return $gravatar_url;
 }
+
+function wpems_get_week( $key = NULL ) {
+    return array(
+        'sat'  => __( 'Saturday', 'wp-ems' ),
+        'sun'  => __( 'Sunday', 'wp-ems' ),
+        'mon'  => __( 'Monday', 'wp-ems' ),
+        'tues' => __( 'Tuesday', 'wp-ems' ),
+        'wed'  => __( 'Wednesday', 'wp-ems' ),
+        'thur' => __( 'Thursday', 'wp-ems' ),
+        'fri'  => __( 'Friday', 'wp-ems' ),
+    );
+}
+
+function wpems_class_subject_format() {
+    $class_arr = array();
+    $subjects_obj = WPEMS_Subject::init()->get_subject();
+
+    foreach($subjects_obj as $key => $value ) {
+       $class_arr[ $value->class_id ][] = array(
+          'id' => $value->id,
+           'name' => $value->name,
+           'teacher_id' => $value->teacher_id
+       );
+    }
+
+    return $class_arr;
+}
+
+function wpems_class_routine_format() {
+    $class_arr = array();
+    $routines = WPEMS_Routine::init()->get_routine();
+
+    foreach( $routines as $routine_key => $routine_value ) {
+        $class_arr[$routine_value->class_name][] = $routine_value;
+    }
+
+    return $class_arr;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

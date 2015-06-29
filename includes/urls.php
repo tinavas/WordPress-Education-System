@@ -56,4 +56,16 @@ function wpems_edit_subject_url() {
     return apply_filters( 'wpems_edit_subject_url',  sprintf( '%s?page=wpems-subject&action=edit', admin_url( 'admin.php' ) ) );
 }
 
+function wpems_routine_tab_url() {
+    return apply_filters( 'wpems_routine_tab_url',  sprintf( '%s?page=wpems-routine', admin_url( 'admin.php' ) ) );
+}
+
+function wpems_add_new_routine_url() {
+    return apply_filters( 'wpems_edit_subject_url',  sprintf( '%s?page=wpems-routine&action=new', admin_url( 'admin.php' ) ) );
+}
+
+function wpems_edit_routine_url() {
+    return apply_filters( 'wpems_edit_routine_url',  sprintf( '%s?page=wpems-routine&action=edit', admin_url( 'admin.php' ) ) );
+}
+
 
