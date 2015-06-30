@@ -68,4 +68,16 @@ function wpems_edit_routine_url() {
     return apply_filters( 'wpems_edit_routine_url',  sprintf( '%s?page=wpems-routine&action=edit', admin_url( 'admin.php' ) ) );
 }
 
+function wpems_student_tab_url() {
+    return apply_filters( 'wpems_student_tab_url',  sprintf( '%s?page=wpems-students', admin_url( 'admin.php' ) ) );
+}
+
+function wpems_add_new_student_url() {
+    return apply_filters( 'wpems_add_new_student_url',  sprintf( '%s?page=wpems-students&action=new', admin_url( 'admin.php' ) ) );
+}
+
+function wpems_edit_student_url() {
+    return apply_filters( 'wpems_edit_student_url',  sprintf( '%s?page=wpems-students&action=edit', admin_url( 'admin.php' ) ) );
+}
+
 

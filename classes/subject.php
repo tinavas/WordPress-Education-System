@@ -65,7 +65,7 @@ class WPEMS_Subject {
             }
 
             if ( !wp_verify_nonce( $_GET['_wpnonce'], 'wpems-delete-subject' ) ) {
-                wp_redirect( add_query_arg( array( 'message' => 'error' ), wpems_section_tab_url() ) );
+                wp_redirect( add_query_arg( array( 'message' => 'error' ), wpems_subject_tab_url() ) );
                 return;
             }
 

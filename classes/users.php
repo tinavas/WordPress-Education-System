@@ -24,6 +24,25 @@ class WPEMS_Users {
 
     public function get_users_list( $no = NULL, $offset=NULL, $role ) {
 
+        if( $no ) {
+            $args['number'] = $no;
+        }
+
+        if( $offset ) {
+            $args['offset'] = $offset;
+        }
+
+        $args['role'] = $role;
+        $user_query = new WP_User_Query( $args );
+        if ( !empty( $user_query->results ) ) {
+            return $user_query->get_results();
+        }
+
+        return false;
+    }
+
+    public function get_users_list_by( $no = NULL, $offset=NULL, $role, $filter_class = NULL ) {
+
     	if( $no ) {
     		$args['number'] = $no;
     	}
@@ -33,6 +52,17 @@ class WPEMS_Users {
     	}
 
 		$args['role'] = $role;
+
+        if ( $filter_class ) {
+            $args['meta_query'] = array(
+                array(
+                    'key'  => 'class_id',
+                    'value'  => $filter_class,
+                )
+            );
+        }
+        var_dump( $args );
+
 		$user_query = new WP_User_Query( $args );
 		if ( !empty( $user_query->results ) ) {
 			return $user_query->get_results();
@@ -47,6 +77,24 @@ class WPEMS_Users {
 
 		return $user_query->total_users;
    	}
+
+    public function count_user_by( $no, $offset, $role, $filter_class = NULL ) {
+        $args = array( 'number' => $no, 'offset' => $offset, 'role' => $role );
+
+        if ( $filter_class ) {
+            $args['meta_query'] = array(
+                array(
+                    'key'  => 'class_id',
+                    'value'  => $filter_class,
+                )
+            );
+        }
+
+        $user_query = new WP_User_Query( $args );
+
+        return $user_query->total_users;
+    }
+
 
     public function get_class_list() {
         global $wpdb;

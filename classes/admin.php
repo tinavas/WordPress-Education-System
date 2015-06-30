@@ -40,6 +40,7 @@ class WPEMS_Admin {
     public function add_admin_menu() {
         $capability = apply_filters( 'wpems_admin_role', 'manage_options' );
         add_menu_page( __( 'WP School Mangement', 'wp-ems' ), __( 'School', 'wp-ems' ), $capability, 'wpems-admin-opt', array( $this, 'adming_page_handle' ), 'dashicons-awards', 55 );
+        add_submenu_page( 'wpems-admin-opt', __( 'Students', 'wp-ems' ), __( 'Students', 'wp-ems' ), $capability, 'wpems-students', array( $this, 'load_students_views') );
         add_submenu_page( 'wpems-admin-opt', __( 'Teachers', 'wp-ems' ), __( 'Teachers', 'wp-ems' ), $capability, 'wpems-teachers', array( $this, 'load_teachers_views') );
         add_submenu_page( 'wpems-admin-opt', __( 'Class', 'wp-ems' ), __( 'Class', 'wp-ems' ), $capability, 'wpems-class', array( $this, 'load_class_views') );
         add_submenu_page( 'wpems-admin-opt', __( 'Subject', 'wp-ems' ), __( 'Subject', 'wp-ems' ), $capability, 'wpems-subject', array( $this, 'load_subject_views') );
@@ -49,8 +50,18 @@ class WPEMS_Admin {
 
     public function adming_page_handle() {
         echo '<div class="wrap wpems-dashbaord">';
-        echo '<h1>Main Dashbaord</h1>';
+        require_once WP_EMS_VIEW_DIR . 'dashboard/main.php';
         echo '</div>';
+    }
+
+    public function load_students_views() {
+        $actions = isset( $_GET['action'] ) ? $_GET['action'] : '';
+
+        if ( $actions == 'new' || $actions == 'edit' ) {
+            require_once WP_EMS_VIEW_DIR . '/students/new-student.php';
+        } else {
+            require_once WP_EMS_VIEW_DIR . '/students/main.php';
+        }
     }
 
     public function load_teachers_views() {
@@ -130,4 +141,5 @@ class WPEMS_Admin {
             require_once WP_EMS_VIEW_DIR . '/routine/main.php';
         }
     }
+
 }

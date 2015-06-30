@@ -1,19 +1,26 @@
 <?php
 $action = isset( $_GET['action'] ) ? $_GET['action'] : '';
-$teacher_id = isset( $_GET['teacher_id'] ) ? $_GET['teacher_id'] : '';
+$student_id = isset( $_GET['student_id'] ) ? $_GET['student_id'] : '';
 $genders = wpems_get_gender();
-if ( $action == 'edit' && $teacher_id ) {
+
+$classes_obj = WPEMS_Class::init();
+$classes = $classes_obj->get_class();
+
+
+if ( $action == 'edit' && $student_id ) {
     $readonly = "readonly";
-    $button_text = "Update Teacher Info";
-    $teacher = get_userdata( $teacher_id );
-    $first_name = get_user_meta( $teacher_id, 'first_name', true );
-    $last_name = get_user_meta( $teacher_id, 'last_name', true );
-    $username = $teacher->user_login;
-    $email = $teacher->user_email;
-    $phone = get_user_meta( $teacher_id, 'phone', true );
-    $birthday = get_user_meta( $teacher_id, 'birthday', true );
-    $gender = get_user_meta( $teacher_id, 'gender', true );
-    $avatar = get_user_meta( $teacher_id, 'avatar', true );
+    $button_text = "Update Student info";
+    $student = get_userdata( $student_id );
+    $first_name = get_user_meta( $student_id, 'first_name', true );
+    $last_name = get_user_meta( $student_id, 'last_name', true );
+    $username = $student->user_login;
+    $email = $student->user_email;
+    $phone = get_user_meta( $student_id, 'phone', true );
+    $roll = get_user_meta( $student_id, 'roll', true );
+    $birthday = get_user_meta( $student_id, 'birthday', true );
+    $class_id = get_user_meta( $student_id, 'class_id', true );
+    $gender = get_user_meta( $student_id, 'gender', true );
+    $avatar = get_user_meta( $student_id, 'avatar', true );
 
     if ( $avatar ) {
         $wrap_class        = '';
@@ -27,13 +34,15 @@ if ( $action == 'edit' && $teacher_id ) {
 
 } else {
     $readonly = "";
-    $button_text = "Create New Teacher";
+    $button_text = "Create New Student";
     $first_name = '';
     $last_name = '';
     $username = '';
     $email = '';
     $phone = '';
+    $roll = '';
     $birthday = '';
+    $class_id = '';
     $gender = '';
     $avatar = '';
     $wrap_class        = ' wpems-hide';
@@ -44,17 +53,17 @@ if ( $action == 'edit' && $teacher_id ) {
 
 <div class="wrap wpems-teacher-wrap">
 
-    <?php if ( $action == 'edit' && $teacher_id ): ?>
-        <h2><?php _e( 'Edit Teacher', 'wp-ems' ); ?> </h2>
+    <?php if ( $action == 'edit' && $student_id ): ?>
+        <h2><?php _e( 'Edit Student', 'wp-ems' ); ?> </h2>
     <?php else: ?>
-        <h2><?php _e( 'Add New Teacher', 'wp-ems' ); ?> </h2>
+        <h2><?php _e( 'Add New Student', 'wp-ems' ); ?> </h2>
     <?php endif ?>
 
     <hr>
 
-    <?php if ( is_wp_error( WPEMS_Teachers::$validate ) ): ?>
+    <?php if ( is_wp_error( WPEMS_Student::$validate ) ): ?>
         <?php
-            $messages = WPEMS_Teachers::$validate->get_error_messages();
+            $messages = WPEMS_Student::$validate->get_error_messages();
             foreach ( $messages as $message ) {
                 ?>
                 <div class="error settings-error notice is-dismissible">
@@ -92,6 +101,21 @@ if ( $action == 'edit' && $teacher_id ) {
                 </div>
 
                 <div class="form-group">
+                    <label for="roll" class="control-label"><?php _e( 'Roll', 'wp-ems' ); ?></label>
+                    <input type="roll" required name="roll" class="form-control" value="<?php echo $roll; ?>">
+                </div>
+
+                <div class="form-group">
+                    <label for="class_id" class="control-label"><?php _e( 'Assign a Class', 'wp-ems' ); ?></label>
+                    <select name="class_id" id="class_id" class="form-control" required>
+                        <option value=""><?php _e( '--Select a class--', 'wp-ems' ); ?></option>
+                        <?php foreach ( $classes as $class_key => $class ): ?>
+                            <option value="<?php echo $class->id; ?>" <?php selected( $class_id, $class->id ); ?>><?php echo $class->class_name; ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label for="email" class="control-label"><?php _e( 'Phone', 'wp-ems' ); ?></label>
                     <input type="number" name="phone" class="form-control" value="<?php echo $phone; ?>">
                 </div>
@@ -110,7 +134,7 @@ if ( $action == 'edit' && $teacher_id ) {
                     </select>
                 </div>
 
-                <?php if ( $action == 'new' && empty( $teacher_id )  ): ?>
+                <?php if ( $action == 'new' && empty( $student_id )  ): ?>
                     <div class="form-group hide_if_generate_auto">
                         <label for="user_password" class="control-label"><?php _e( 'Password', 'wp-ems' ); ?></label>
                         <input type="password" required name="user_password" id="user_password" class="form-control" autocomplete="off">
@@ -118,17 +142,17 @@ if ( $action == 'edit' && $teacher_id ) {
                     <div class="checkbox">
                       <label>
                         <input type="checkbox" value="yes" id="password_auto_generate" name="password_auto_generate">
-                            Autometic generate password and send to this user in mail
+                            <?php _e( 'Autometic generate password and send to this user in mail', 'wp-ems' ) ?>
                       </label>
                     </div>
                 <?php endif ?>
 
                 <div class="form-group">
-                    <?php if ( $action == 'edit' && $teacher_id ): ?>
-                        <input type="hidden" name="teacher_id" value="<?php echo $teacher_id; ?>">
+                    <?php if ( $action == 'edit' && $student_id ): ?>
+                        <input type="hidden" name="student_id" value="<?php echo $student_id; ?>">
                     <?php endif; ?>
-                    <?php wp_nonce_field( 'wpems_teacher_save_action', 'wpems_teacher_save_action_nonce' ); ?>
-                    <input type="submit" name="save_teacher" value="<?php echo $button_text; ?>" class="button button-primary">
+                    <?php wp_nonce_field( 'wpems_student_save_action', 'wpems_student_save_action_nonce' ); ?>
+                    <input type="submit" name="save_student" value="<?php echo $button_text ?>" class="button button-primary">
                 </div>
             </div>
             <div class="col-md-4 pull-right">
@@ -142,7 +166,7 @@ if ( $action == 'edit' && $teacher_id ) {
                     <div class="image-wrap<?php echo $wrap_class; ?>">
                         <a class="close profile-image-remove-btn">&times;</a>
                         <?php if ( $profile_image_id ): ?>
-                            <img src="<?php echo wpems_get_profile_avatar( $teacher_id ); ?>" alt="" width="200px" height="200px">
+                            <img src="<?php echo wpems_get_profile_avatar( $student_id ); ?>" alt="" width="200px" height="200px">
                         <?php else: ?>
                             <img src="" alt="" width="200px" height="200px">
                         <?php endif ?>

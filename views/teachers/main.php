@@ -36,7 +36,7 @@
     </div>
     <?php
     $users      = WPEMS_Users::init();
-    $no         = 2;
+    $no         = 20;
     $paged      = ( isset( $_GET['paged'] ) ) ? $_GET['paged'] : 1;
     $offset     = ( $paged == 1 ) ? 0 : ( ( $paged-1)*$no );
     $total_user = $users->count_user( $no, $offset, 'teacher' );
@@ -82,7 +82,7 @@
 
                         <div class="row-actions">
                             <span class="edit"><a href="<?php echo add_query_arg( array( 'teacher_id' => $teacher->ID ), wpems_edit_teacher_url() ); ?>" data-id="<?php echo $teacher->ID; ?>" title="Edit this item"><?php _e( 'Edit', 'wp-ems' ); ?></a> | </span>
-                            <span class="trash"><a class="submitdelete" data-id="<?php echo $teacher->ID; ?>" title="Delete this item" href=""><?php _e( 'Delete', 'wp-ems' ); ?></a></span>
+                            <span class="trash"><a data-id="<?php echo $teacher->ID; ?>" title="Delete this item" onclick="return confirm('Are you sure?');" class="submitdelete" title="Delete this item" href="<?php echo wp_nonce_url( add_query_arg( array( 'delete_action' => 'wpems-delete-teacher', 'teacher_id' => $teacher->ID ), wpems_edit_teacher_url() ), 'wpems-delete-teacher' ); ?>"><?php _e( 'Delete', 'wp-ems' ); ?></a></span>
                         </div>
                     </td>
                     <td class="col-"><?php echo $teacher->display_name; ?></td>
@@ -105,7 +105,7 @@
         </div>
         <?php if ( $total_user > $no ): ?>
             <div class="tablenav-pages">
-                <?php echo wpems_paginations( $total_user, $paged, $no ); ?>
+                <?php echo wpems_paginations( $total_user, $paged, $no, wpems_teacher_listing_url() ); ?>
             </div>
         <?php endif ?>
     </div>

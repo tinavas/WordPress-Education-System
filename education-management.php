@@ -167,6 +167,7 @@ class WP_Education_Management {
         if ( is_admin() ) {
             WPEMS_Admin::init();
             WPEMS_Teachers::init();
+            WPEMS_Student::init();
             WPEMS_Users::init();
             WPEMS_Class::init();
             WPEMS_Section::init();
