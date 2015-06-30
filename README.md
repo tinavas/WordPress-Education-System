@@ -1,6 +1,8 @@
 WordPress Education Management System
 =====================================
 
+#### N.B. : Currently in developement Phase :)
+
 This is a Management System for Students, Teachers and other all stuffs powered by WordPress. Its manage School and College education system.
 
 Installing Process
