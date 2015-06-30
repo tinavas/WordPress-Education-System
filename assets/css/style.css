@@ -12,6 +12,34 @@
 		height: auto;
 }
 
+/**
+ * Dashboard Styles
+ */
+
+.wpems-dashbaord .wpems-dashbaord-event-schedule {
+    width: 70%;
+    float: left;
+    margin-right: 3%;
+}
+
+.wpems-dashbaord .wpes-dashboard-sidebar {
+    width: 25%;
+    float:left;
+}
+
+.wpems-dashbaord .wpems-dashboard-content .wpems-dashboard-counter {
+	text-align: center;
+	font-size: 45px;
+	margin: 30px 5px;
+}
+
+.wpems-dashbaord .wpems-dashboard-content .wpems-dashboard-counter-label {
+	text-align: center;
+  	font-size: 21px;
+}
+
+/** End of Dashboard Styles */
+
 #wpems-teacher-wrapper .wpems-profile-image-upload {
 	border: 4px dashed #DDDDDD;
 	height: 200px;
@@ -145,4 +173,5 @@
 .wpems-routine-content .wpems-routine-item .routine-action {
 	margin-left: 10px;
 }
+
 

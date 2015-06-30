@@ -250,11 +250,18 @@ class WP_Education_Management {
         wp_enqueue_style( 'wp-ems-magnific-popup-styles', plugins_url( 'assets/css/magnific-popup.css', __FILE__ ), false, date( 'Ymd' ) );
         wp_enqueue_style( 'wp-ems-timepicker-styles', plugins_url( 'assets/css/jquery.ui.timepicker.css', __FILE__ ), false, date( 'Ymd' ) );
         wp_enqueue_style( 'wp-ems-bootstrap', plugins_url( 'assets/css/bootstrap.css', __FILE__ ), false, date( 'Ymd' ) );
+        // wp_enqueue_style( 'wp-ems-jquery-custom-ui', plugins_url( 'assets/css/jquery-ui-1.9.1.custom.css', __FILE__ ), false, date( 'Ymd' ) );
+        wp_enqueue_style( 'wp-ems-fullcalendar', plugins_url( 'assets/css/fullcalendar.css', __FILE__ ), false, date( 'Ymd' ) );
+        wp_enqueue_style( 'wp-ems-fullcalendar-print', plugins_url( 'assets/css/fullcalendar.print.css', __FILE__ ), false, date( 'Ymd' ), 'print' );
         wp_enqueue_style( 'wp-ems-style', plugins_url( 'assets/css/style.css', __FILE__ ), false, date( 'Ymd' ) );
 
         wp_enqueue_script( 'wp-ems-magnific-popup-scripts', plugins_url( 'assets/js/jquery.magnific-popup.min.js', __FILE__ ), array( 'jquery', 'jquery-ui-core' ), false, true );
         wp_enqueue_script( 'wp-ems-timepicker-scripts', plugins_url( 'assets/js/jquery.ui.timepicker.js', __FILE__ ), array( 'jquery' ), false, true );
-        wp_enqueue_script( 'wp-ems-scripts', plugins_url( 'assets/js/script.js', __FILE__ ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker', 'wp-ems-timepicker-scripts' ), false, true );
+        wp_enqueue_script( 'wp-ems-waypoints-scripts', plugins_url( 'assets/js/jquery.waypoints.min.js', __FILE__ ), array( 'jquery' ), false, true );
+        wp_enqueue_script( 'wp-ems-counterup-scripts', plugins_url( 'assets/js/jquery.counterup.min.js', __FILE__ ), array( 'jquery' ), false, true );
+        wp_enqueue_script( 'wp-ems-moment-scripts', plugins_url( 'assets/js/moment.min.js', __FILE__ ), array( 'jquery' ), false, false );
+        wp_enqueue_script( 'wp-ems-fullcalendar-scripts', plugins_url( 'assets/js/fullcalendar.min.js', __FILE__ ), array( 'jquery', 'wp-ems-moment-scripts' ), false, false );
+        wp_enqueue_script( 'wp-ems-scripts', plugins_url( 'assets/js/script.js', __FILE__ ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker', 'wp-ems-timepicker-scripts', 'wp-ems-fullcalendar-scripts' ), false, true );
         wp_enqueue_script( 'wp-ems-teachers-scripts', plugins_url( 'assets/js/teachers.js', __FILE__ ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker', 'wp-ems-timepicker-scripts' ), false, true );
 
     }

@@ -50,7 +50,7 @@ class WPEMS_Admin {
 
     public function adming_page_handle() {
         echo '<div class="wrap wpems-dashbaord">';
-        require_once WP_EMS_VIEW_DIR . 'dashboard/main.php';
+        require_once WP_EMS_VIEW_DIR . '/dashboard/main.php';
         echo '</div>';
     }
 
