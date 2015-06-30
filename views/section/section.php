@@ -27,7 +27,7 @@
     } else {
         $class_name_arr = array();
     }
-    $filter_class = ( isset( $_GET['filter_class'] ) && !empty( $_GET['f ilter_class'] ) ) ? $_GET['filter_class'] : '';
+    $filter_class = ( isset( $_GET['filter_class'] ) && !empty( $_GET['filter_class'] ) ) ? $_GET['filter_class'] : '';
     ?>
 
     <div class="tablenav top">
