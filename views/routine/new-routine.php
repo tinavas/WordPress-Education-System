@@ -12,7 +12,6 @@ if ( $action == 'edit' && $routine_id ) {
     $heading = __( 'Edit Routine Info', 'wp-ems' );
     $button_text = __( 'Update Routine', 'wp-ems' );
     $routine_info = WPEMS_Routine::init()->get_routine( $routine_id );
-    var_dump( $routine_info );
     $class_id = isset( $routine_info->class_id ) ? $routine_info->class_id  : '';
     $subject_id = isset( $routine_info->subject_id ) ? $routine_info->subject_id  : '';
     $week = isset( $routine_info->day ) ? $routine_info->day  : '';
