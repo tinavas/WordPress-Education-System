@@ -70,27 +70,33 @@
         </tfoot>
 
         <tbody id="the-list">
+            <?php if ( $teachers ): ?>
+                <?php foreach ( $teachers as $key => $teacher ): ?>
+                    <tr class="alternate" id="wp-ems-teacher-<?php echo 2; ?>">
+                        <th scope="row" class="check-column">
+                            <input id="cb-select-1" type="checkbox" name="teacher_id[]" value="<?php echo $teacher->ID; ?>">
+                        </th>
+                        <td class="col- column-username">
+                            <img alt="" src="<?php echo wpems_get_profile_avatar( $teacher->ID ); ?>" class="avatar avatar-32 photo" height="32" width="32">
+                            <strong><a href="<?php echo add_query_arg( array( 'teacher_id' => $teacher->ID ), wpems_edit_teacher_url() ); ?>"><?php echo $teacher->user_login; ?></a></strong>
 
-            <?php foreach ( $teachers as $key => $teacher ): ?>
-                <tr class="alternate" id="wp-ems-teacher-<?php echo 2; ?>">
-                    <th scope="row" class="check-column">
-                        <input id="cb-select-1" type="checkbox" name="teacher_id[]" value="<?php echo $teacher->ID; ?>">
-                    </th>
-                    <td class="col- column-username">
-                        <img alt="" src="<?php echo wpems_get_profile_avatar( $teacher->ID ); ?>" class="avatar avatar-32 photo" height="32" width="32">
-                        <strong><a href="<?php echo add_query_arg( array( 'teacher_id' => $teacher->ID ), wpems_edit_teacher_url() ); ?>"><?php echo $teacher->user_login; ?></a></strong>
-
-                        <div class="row-actions">
-                            <span class="edit"><a href="<?php echo add_query_arg( array( 'teacher_id' => $teacher->ID ), wpems_edit_teacher_url() ); ?>" data-id="<?php echo $teacher->ID; ?>" title="Edit this item"><?php _e( 'Edit', 'wp-ems' ); ?></a> | </span>
-                            <span class="trash"><a data-id="<?php echo $teacher->ID; ?>" title="Delete this item" onclick="return confirm('Are you sure?');" class="submitdelete" title="Delete this item" href="<?php echo wp_nonce_url( add_query_arg( array( 'delete_action' => 'wpems-delete-teacher', 'teacher_id' => $teacher->ID ), wpems_edit_teacher_url() ), 'wpems-delete-teacher' ); ?>"><?php _e( 'Delete', 'wp-ems' ); ?></a></span>
-                        </div>
-                    </td>
-                    <td class="col-"><?php echo $teacher->display_name; ?></td>
-                    <td class="col-"><?php echo $teacher->user_email; ?></td>
-                    <td class="col-"><?php echo get_user_meta( $teacher->ID, 'phone', true ); ?></td>
-                    <td class="col-"><?php echo ucfirst( get_user_meta( $teacher->ID, 'gender', true ) ); ?></td>
+                            <div class="row-actions">
+                                <span class="edit"><a href="<?php echo add_query_arg( array( 'teacher_id' => $teacher->ID ), wpems_edit_teacher_url() ); ?>" data-id="<?php echo $teacher->ID; ?>" title="Edit this item"><?php _e( 'Edit', 'wp-ems' ); ?></a> | </span>
+                                <span class="trash"><a data-id="<?php echo $teacher->ID; ?>" title="Delete this item" onclick="return confirm('Are you sure?');" class="submitdelete" title="Delete this item" href="<?php echo wp_nonce_url( add_query_arg( array( 'delete_action' => 'wpems-delete-teacher', 'teacher_id' => $teacher->ID ), wpems_edit_teacher_url() ), 'wpems-delete-teacher' ); ?>"><?php _e( 'Delete', 'wp-ems' ); ?></a></span>
+                            </div>
+                        </td>
+                        <td class="col-"><?php echo $teacher->display_name; ?></td>
+                        <td class="col-"><?php echo $teacher->user_email; ?></td>
+                        <td class="col-"><?php echo get_user_meta( $teacher->ID, 'phone', true ); ?></td>
+                        <td class="col-"><?php echo ucfirst( get_user_meta( $teacher->ID, 'gender', true ) ); ?></td>
+                    </tr>
+                <?php endforeach ?>
+            <?php else: ?>
+                <tr class="even">
+                    <td colspan="4"><?php _e( 'No Teachers found.', 'wp-ems' ); ?></td>
                 </tr>
-            <?php endforeach ?>
+            <?php endif ?>
+
         </tbody>
     </table>
 
