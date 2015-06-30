@@ -26,8 +26,18 @@
     $class = WPEMS_Class::init();
     $teachers = WPEMS_Users::init()->get_users_list( NULL, NULL, 'teacher' );
     $classes = $class->get_class();
-    $class_name_arr = wp_list_pluck( $classes, 'class_name', 'id' );
-    $teacher_name_arr = wp_list_pluck( $teachers, 'display_name', 'ID' );
+
+    if ( $classes ) {
+        $class_name_arr = wp_list_pluck( $classes, 'class_name', 'id' );
+    } else {
+        $class_name_arr = array();
+    }
+
+    if ( $teachers ) {
+        $teacher_name_arr = wp_list_pluck( $teachers, 'display_name', 'ID' );
+    } else {
+        $teacher_name_arr = array();
+    }
 
     $filter_class = ( isset( $_GET['filter_class'] ) && !empty( $_GET['filter_class'] ) ) ? $_GET['filter_class'] : NULL;
     $filter_teacher = ( isset( $_GET['filter_teacher'] ) && !empty( $_GET['filter_teacher'] ) ) ? $_GET['filter_teacher'] : NULL;
@@ -130,8 +140,8 @@
                                 <span class="trash"><a onclick="return confirm('Are you sure?');" class="submitdelete" data-id="<?php echo $subject->id; ?>" title="Delete this item" href="<?php echo wp_nonce_url( add_query_arg( array( 'delete_action' => 'wpems-delete-subject', 'subject_id' => $subject->id ), wpems_edit_subject_url() ), 'wpems-delete-subject' ); ?>"><?php _e( 'Delete', 'wp-ems' ); ?></a></span>
                             </div>
                         </td>
-                        <td class="col-"><?php echo $teacher_name_arr[$subject->teacher_id ]; ?></td>
-                        <td class="col-"><?php echo $class_name_arr[$subject->class_id]; ?></td>
+                        <td class="col-"><?php echo isset( $teacher_name_arr[$subject->teacher_id ] ) ? $teacher_name_arr[$subject->teacher_id ] : ''; ?></td>
+                        <td class="col-"><?php echo isset( $class_name_arr[$subject->class_id] ) ? $class_name_arr[$subject->class_id] : ''; ?></td>
                     </tr>
                 <?php endforeach ?>
             <?php else: ?>

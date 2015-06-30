@@ -64,23 +64,28 @@
         </tfoot>
 
         <tbody id="the-list">
-
-            <?php foreach ( $classes as $key => $class ): ?>
-                <tr class="alternate" id="wp-ems-teacher-<?php echo $class->id; ?>">
-                    <th scope="row" class="check-column">
-                        <input id="cb-select-1" type="checkbox" name="class_id[]" value="<?php echo $class->id; ?>">
-                    </th>
-                    <td class="col- column-username">
-                        <strong><a href="<?php echo add_query_arg( array( 'class_id' => $class->id ), wpems_edit_class_url() ); ?>"><?php echo $class->class_name; ?></a></strong>
-                        <div class="row-actions">
-                            <span class="edit"><a href="<?php echo add_query_arg( array( 'class_id' => $class->id ), wpems_edit_class_url() ); ?>" data-id="<?php echo $class->id; ?>" title="Edit this item"><?php _e( 'Edit', 'wp-ems' ); ?></a> | </span>
-                            <span class="trash"><a onclick="return confirm('Are you sure?');" class="submitdelete" data-id="<?php echo $class->id; ?>" title="Delete this item" href="<?php echo wp_nonce_url( add_query_arg( array( 'delete_action' => 'wpems-delete-class', 'class_id' => $class->id ), wpems_edit_class_url() ), 'wpems-delete-class' ); ?>"><?php _e( 'Delete', 'wp-ems' ); ?></a></span>
-                        </div>
-                    </td>
-                    <td class="col-"><?php echo $class->class_numeric_name; ?></td>
-                    <td class="col-"><?php echo wpems_display_user_fullname( $class->teacher_id ); ?></td>
+            <?php if ( $classes ): ?>
+                <?php foreach ( $classes as $key => $class ): ?>
+                    <tr class="alternate" id="wp-ems-teacher-<?php echo $class->id; ?>">
+                        <th scope="row" class="check-column">
+                            <input id="cb-select-1" type="checkbox" name="class_id[]" value="<?php echo $class->id; ?>">
+                        </th>
+                        <td class="col- column-username">
+                            <strong><a href="<?php echo add_query_arg( array( 'class_id' => $class->id ), wpems_edit_class_url() ); ?>"><?php echo $class->class_name; ?></a></strong>
+                            <div class="row-actions">
+                                <span class="edit"><a href="<?php echo add_query_arg( array( 'class_id' => $class->id ), wpems_edit_class_url() ); ?>" data-id="<?php echo $class->id; ?>" title="Edit this item"><?php _e( 'Edit', 'wp-ems' ); ?></a> | </span>
+                                <span class="trash"><a onclick="return confirm('Are you sure?');" class="submitdelete" data-id="<?php echo $class->id; ?>" title="Delete this item" href="<?php echo wp_nonce_url( add_query_arg( array( 'delete_action' => 'wpems-delete-class', 'class_id' => $class->id ), wpems_edit_class_url() ), 'wpems-delete-class' ); ?>"><?php _e( 'Delete', 'wp-ems' ); ?></a></span>
+                            </div>
+                        </td>
+                        <td class="col-"><?php echo $class->class_numeric_name; ?></td>
+                        <td class="col-"><?php echo wpems_display_user_fullname( $class->teacher_id ); ?></td>
+                    </tr>
+                <?php endforeach ?>
+            <?php else: ?>
+                <tr classe="even">
+                    <td colspan="3"><?php _e( 'No Class founds.', 'wp-ems' ); ?></td>
                 </tr>
-            <?php endforeach ?>
+            <?php endif ?>
         </tbody>
     </table>
 

@@ -33,49 +33,57 @@ $weeks_day = wpems_get_week();
 
     <?php endif ?>
 
-    <?php foreach ( $routines as $class_name => $routine_value ): ?>
+    <?php if ( $routines ): ?>
 
-        <div class="postbox wpems-routine-metabox">
-            <div id="dashboard-widgets" class="metabox-holder">
-                <h3 class="hndle"><span><?php _e( 'Class: ', 'wp-ems ') ?><?php echo $class_name ?></span></h3>
-                <div class="wpems-routine-action">
-                    <a href="#" class="wpems-action-toggle">Toggle</a>
-                </div>
-                <div class="wpems-routine-content inside">
-                    <table class="wpems-class-routine">
-                        <thead>
-                            <th>Day</th>
-                            <th>Class Schedule</th>
-                        </thead>
-                        <tbody>
-                            <?php foreach ( $weeks_day as $week_key => $week_val ): ?>
+        <?php foreach ( $routines as $class_name => $routine_value ): ?>
 
-                                <tr>
-                                    <td><?php echo $week_val; ?></td>
-                                    <td>
-                                    <?php foreach ( $routine_value as $routine ): ?>
+            <div class="postbox wpems-routine-metabox">
+                <div id="dashboard-widgets" class="metabox-holder">
+                    <h3 class="hndle"><span><?php _e( 'Class: ', 'wp-ems ') ?><?php echo $class_name ?></span></h3>
+                    <div class="wpems-routine-action">
+                        <a href="#" class="wpems-action-toggle">Toggle</a>
+                    </div>
+                    <div class="wpems-routine-content inside">
+                        <table class="wpems-class-routine">
+                            <thead>
+                                <th>Day</th>
+                                <th>Class Schedule</th>
+                            </thead>
+                            <tbody>
+                                <?php foreach ( $weeks_day as $week_key => $week_val ): ?>
 
-                                        <?php if ( isset( $routine->day ) && $week_key == $routine->day ): ?>
-                                            <div class="wpems-routine-item">
-                                                <?php echo $routine->name . ' ( '. $routine->start_time. ' - ' . $routine->end_time . ' )'; ?>
-                                                <span class="routine-action">
-                                                    <a href="<?php echo add_query_arg( array( 'routine_id' => $routine->id ), wpems_edit_routine_url() ) ?>"><i class="fa fa-pencil"></i></a>
-                                                    <a href="<?php echo wp_nonce_url( add_query_arg( array( 'delete_action' => 'wpems-delete-routine', 'routine_id' => $routine->id ), wpems_edit_routine_url() ), 'wpems-delete-routine' ); ?>" onclick="return confirm('Are you sure?');" ><i class="fa fa-times"></i></a>
-                                                </span>
-                                            </div>
-                                        <?php endif ?>
+                                    <tr>
+                                        <td><?php echo $week_val; ?></td>
+                                        <td>
+                                        <?php foreach ( $routine_value as $routine ): ?>
 
-                                    <?php endforeach ?>
-                                    </td>
-                                </tr>
+                                            <?php if ( isset( $routine->day ) && $week_key == $routine->day ): ?>
+                                                <div class="wpems-routine-item">
+                                                    <?php echo $routine->name . ' ( '. $routine->start_time. ' - ' . $routine->end_time . ' )'; ?>
+                                                    <span class="routine-action">
+                                                        <a href="<?php echo add_query_arg( array( 'routine_id' => $routine->id ), wpems_edit_routine_url() ) ?>"><i class="fa fa-pencil"></i></a>
+                                                        <a href="<?php echo wp_nonce_url( add_query_arg( array( 'delete_action' => 'wpems-delete-routine', 'routine_id' => $routine->id ), wpems_edit_routine_url() ), 'wpems-delete-routine' ); ?>" onclick="return confirm('Are you sure?');" ><i class="fa fa-times"></i></a>
+                                                    </span>
+                                                </div>
+                                            <?php endif ?>
 
-                            <?php endforeach ?>
-                        </tbody>
-                    </table>
+                                        <?php endforeach ?>
+                                        </td>
+                                    </tr>
+
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
-    <?php endforeach ?>
+        <?php endforeach ?>
+
+    <?php else: ?>
+        <div class="updated settings-updated notice is-dismissible">
+            <p><strong><?php _e( 'No Routine Found', 'wp-ems') ?></strong></p>
+        </div>
+    <?php endif ?>
 
 </div>

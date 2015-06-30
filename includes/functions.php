@@ -65,8 +65,10 @@ function wpems_class_routine_format() {
     $class_arr = array();
     $routines = WPEMS_Routine::init()->get_routine();
 
-    foreach( $routines as $routine_key => $routine_value ) {
-        $class_arr[$routine_value->class_name][] = $routine_value;
+    if ( $routines ) {
+        foreach( $routines as $routine_key => $routine_value ) {
+            $class_arr[$routine_value->class_name][] = $routine_value;
+        }
     }
 
     return $class_arr;

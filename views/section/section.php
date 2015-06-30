@@ -22,8 +22,12 @@
     <?php
     $class = WPEMS_Class::init();
     $classes = $class->get_class();
-    $class_name_arr = wp_list_pluck( $classes, 'class_name', 'id' );
-    $filter_class = ( isset( $_GET['filter_class'] ) && !empty( $_GET['filter_class'] ) ) ? $_GET['filter_class'] : '';
+    if ( $classes ) {
+        $class_name_arr = wp_list_pluck( $classes, 'class_name', 'id' );
+    } else {
+        $class_name_arr = array();
+    }
+    $filter_class = ( isset( $_GET['filter_class'] ) && !empty( $_GET['f ilter_class'] ) ) ? $_GET['filter_class'] : '';
     ?>
 
     <div class="tablenav top">
@@ -42,7 +46,7 @@
                 <label for="bulk-action-selector-top" class="screen-reader-text">Filter by a Class</label>
                 <select name="filter_class" id="bulk-action-selector-top">
                     <option value="" selected="selected">Filter By Class</option>
-                    <?php foreach ($classes as $class_key => $class ): ?>
+                    <?php foreach ( $classes as $class_key => $class ): ?>
                         <option value="<?php echo $class->id ?>" <?php selected( $filter_class, $class->id ); ?>><?php echo $class->class_name; ?></option>
                     <?php endforeach ?>
                 </select>

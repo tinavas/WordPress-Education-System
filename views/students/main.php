@@ -25,7 +25,12 @@
     <?php
     $class = WPEMS_Class::init();
     $classes = $class->get_class();
-    $class_name_arr = wp_list_pluck( $classes, 'class_name', 'id' );
+    if ( $classes ) {
+        $class_name_arr = wp_list_pluck( $classes, 'class_name', 'id' );
+    } else {
+        $class_name_arr = array();
+    }
+
     $filter_class = ( isset( $_GET['filter_class'] ) && !empty( $_GET['filter_class'] ) ) ? $_GET['filter_class'] : '';
     ?>
 
@@ -115,7 +120,14 @@
                         </td>
                         <td class="col-"><?php echo $student->display_name; ?></td>
                         <td class="col-"><?php echo get_user_meta( $student->ID, 'roll', true ); ?></td>
-                        <td class="col-"><?php echo $class_name_arr[get_user_meta( $student->ID, 'class_id', true )]; ?></td>
+                        <td class="col-">
+                            <?php
+                                $class_name_id = get_user_meta( $student->ID, 'class_id', true );
+                                if ( $class_name_id ) {
+                                    echo isset( $class_name_arr[$class_name_id] ) ? $class_name_arr[$class_name_id] : '';
+                                }
+                            ?>
+                        </td>
                         <td class="col-"><?php echo $student->user_email; ?></td>
                         <td class="col-"><?php echo get_user_meta( $student->ID, 'phone', true ); ?></td>
                         <td class="col-"><?php echo ucfirst( get_user_meta( $student->ID, 'gender', true ) ); ?></td>
