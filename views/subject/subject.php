@@ -1,6 +1,9 @@
 <div class="wrap wpems-teacher-wrap">
 
-    <h2><?php _e( 'Manage Subjects', 'wp-ems' ); ?> <a href="<?php echo wpems_add_new_subject_url(); ?>" id="wpems-new-teacher" class="add-new-h2"><?php _e( 'Add New', 'wp-ems' ); ?></a></h2>
+    <h2><?php _e( 'Manage Subjects', 'wp-ems' ); ?>
+        <?php if ( !current_user_can('student') ): ?>
+            <a href="<?php echo wpems_add_new_subject_url(); ?>" id="wpems-new-teacher" class="add-new-h2"><?php _e( 'Add New', 'wp-ems' ); ?></a></h2>
+        <?php endif ?>
 
     <?php if ( isset( $_GET['wpems_message'] ) ): ?>
 
@@ -44,15 +47,16 @@
     ?>
 
     <div class="tablenav top">
-        <div class="alignleft actions bulkactions">
-            <label for="bulk-action-selector-top" class="screen-reader-text">Select Bulk Action</label>
-            <select name="action" id="bulk-action-selector-top">
-                <option value="-1" selected="selected">Bulk Actions</option>
-                <option value="trash">Move to Trash</option>
-            </select>
-            <input type="submit" name="" id="doaction" class="button action" value="Apply">
-        </div>
-
+        <?php if ( !current_user_can('student') ): ?>
+            <div class="alignleft actions bulkactions">
+                <label for="bulk-action-selector-top" class="screen-reader-text">Select Bulk Action</label>
+                <select name="action" id="bulk-action-selector-top">
+                    <option value="-1" selected="selected">Bulk Actions</option>
+                    <option value="trash">Move to Trash</option>
+                </select>
+                <input type="submit" name="" id="doaction" class="button action" value="Apply">
+            </div>
+        <?php endif ?>
         <div class="alignleft actions bulkactions">
             <form action="" method="get">
                 <input type="hidden" name="page" value="wpems-subject">
@@ -105,9 +109,12 @@
     <table class="wp-list-table widefat fixed teachers-list-table">
         <thead>
             <tr>
+                <?php if ( !current_user_can('student' ) ): ?>
+
                 <th scope="col" id="cb" class="manage-column column-cb check-column" style="">
                     <input id="cb-select-all-1" type="checkbox">
                 </th>
+                <?php endif ?>
                 <th class="col-"><?php _e( 'Subject Name', 'wp-ems' ); ?></th>
                 <th class="col-"><?php _e( 'Assing Teacher', 'wp-ems' ); ?></th>
                 <th class="col-"><?php _e( 'Class', 'wp-ems' ); ?></th>
@@ -116,9 +123,11 @@
 
         <tfoot>
             <tr>
-                <th scope="col" id="cb" class="manage-column column-cb check-column" style="">
-                    <input id="cb-select-all-1" type="checkbox">
-                </th>
+                <?php if ( !current_user_can('student' ) ): ?>
+                    <th scope="col" id="cb" class="manage-column column-cb check-column" style="">
+                        <input id="cb-select-all-1" type="checkbox">
+                    </th>
+                <?php endif; ?>
                 <th class="col-"><?php _e( 'Subject Name', 'wp-ems' ); ?></th>
                 <th class="col-"><?php _e( 'Assing Teacher', 'wp-ems' ); ?></th>
                 <th class="col-"><?php _e( 'Class', 'wp-ems' ); ?></th>
@@ -130,15 +139,25 @@
 
                 <?php foreach ( $subjects as $subject_key => $subject ): ?>
                     <tr class="alternate" id="wp-ems-teacher-<?php echo $subject->id; ?>">
-                        <th scope="row" class="check-column">
-                            <input id="cb-select-1" type="checkbox" name="section_id[]" value="<?php echo $subject->id; ?>">
-                        </th>
+                        <?php if ( !current_user_can('student') ): ?>
+                            <th scope="row" class="check-column">
+                                <input id="cb-select-1" type="checkbox" name="section_id[]" value="<?php echo $subject->id; ?>">
+                            </th>
+                        <?php endif ?>
                         <td class="col- column-username">
-                            <strong><a href="<?php echo add_query_arg( array( 'subject_id' => $subject->id ), wpems_edit_subject_url() ); ?>"><?php echo $subject->name; ?></a></strong>
-                            <div class="row-actions">
-                                <span class="edit"><a href="<?php echo add_query_arg( array( 'subject_id' => $subject->id ), wpems_edit_subject_url() ); ?>" data-id="<?php echo $subject->id; ?>" title="Edit this item"><?php _e( 'Edit', 'wp-ems' ); ?></a> | </span>
-                                <span class="trash"><a onclick="return confirm('Are you sure?');" class="submitdelete" data-id="<?php echo $subject->id; ?>" title="Delete this item" href="<?php echo wp_nonce_url( add_query_arg( array( 'delete_action' => 'wpems-delete-subject', 'subject_id' => $subject->id ), wpems_edit_subject_url() ), 'wpems-delete-subject' ); ?>"><?php _e( 'Delete', 'wp-ems' ); ?></a></span>
-                            </div>
+                            <strong>
+                                <?php if ( !current_user_can('student' ) ): ?>
+                                    <a href="<?php echo add_query_arg( array( 'subject_id' => $subject->id ), wpems_edit_subject_url() ); ?>"><?php echo $subject->name; ?></a>
+                                <?php else: ?>
+                                    <?php echo $subject->name; ?>
+                                <?php endif; ?>
+                            </strong>
+                            <?php if ( !current_user_can('student' ) ): ?>
+                                <div class="row-actions">
+                                    <span class="edit"><a href="<?php echo add_query_arg( array( 'subject_id' => $subject->id ), wpems_edit_subject_url() ); ?>" data-id="<?php echo $subject->id; ?>" title="Edit this item"><?php _e( 'Edit', 'wp-ems' ); ?></a> | </span>
+                                    <span class="trash"><a onclick="return confirm('Are you sure?');" class="submitdelete" data-id="<?php echo $subject->id; ?>" title="Delete this item" href="<?php echo wp_nonce_url( add_query_arg( array( 'delete_action' => 'wpems-delete-subject', 'subject_id' => $subject->id ), wpems_edit_subject_url() ), 'wpems-delete-subject' ); ?>"><?php _e( 'Delete', 'wp-ems' ); ?></a></span>
+                                </div>
+                            <?php endif; ?>
                         </td>
                         <td class="col-"><?php echo isset( $teacher_name_arr[$subject->teacher_id ] ) ? $teacher_name_arr[$subject->teacher_id ] : ''; ?></td>
                         <td class="col-"><?php echo isset( $class_name_arr[$subject->class_id] ) ? $class_name_arr[$subject->class_id] : ''; ?></td>
@@ -154,14 +173,16 @@
     </table>
 
     <div class="tablenav bottom">
-        <div class="alignleft actions bulkactions">
-            <label for="bulk-action-selector-top" class="screen-reader-text">Select bulk action</label>
-            <select name="action" id="bulk-action-selector-top">
-                <option value="-1" selected="selected">Bulk Actions</option>
-                <option value="trash">Move to Trash</option>
-            </select>
-            <input type="submit" name="" id="doaction" class="button action" value="Apply">
-        </div>
+        <?php if ( !current_user_can('student') ): ?>
+            <div class="alignleft actions bulkactions">
+                <label for="bulk-action-selector-top" class="screen-reader-text">Select bulk action</label>
+                <select name="action" id="bulk-action-selector-top">
+                    <option value="-1" selected="selected">Bulk Actions</option>
+                    <option value="trash">Move to Trash</option>
+                </select>
+                <input type="submit" name="" id="doaction" class="button action" value="Apply">
+            </div>
+        <?php endif ?>
         <?php if ( $total_subject > $no ): ?>
             <div class="tablenav-pages">
                 <?php echo wpems_paginations( $total_subject, $paged, $no, wpems_subject_tab_url() ); ?>

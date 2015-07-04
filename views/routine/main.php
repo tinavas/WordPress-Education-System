@@ -4,7 +4,10 @@ $weeks_day = wpems_get_week();
 ?>
 <div class="wrap wpems-class-routine-wrap">
 
-    <h2><?php _e( 'Manage Class Schedule', 'wp-ems' ); ?> <a href="<?php echo wpems_add_new_routine_url(); ?>" id="wpems-new-teacher" class="add-new-h2"><?php _e( 'Add New', 'wp-ems' ); ?></a></h2>
+    <h2><?php _e( 'Manage Class Schedule', 'wp-ems' ); ?>
+        <?php if ( !current_user_can('student') ): ?>
+            <a href="<?php echo wpems_add_new_routine_url(); ?>" id="wpems-new-teacher" class="add-new-h2"><?php _e( 'Add New', 'wp-ems' ); ?></a></h2>
+        <?php endif ?>
 
     <?php if ( isset( $_GET['wpems_message'] ) ): ?>
 
@@ -60,10 +63,12 @@ $weeks_day = wpems_get_week();
                                             <?php if ( isset( $routine->day ) && $week_key == $routine->day ): ?>
                                                 <div class="wpems-routine-item">
                                                     <?php echo $routine->name . ' ( '. $routine->start_time. ' - ' . $routine->end_time . ' )'; ?>
-                                                    <span class="routine-action">
-                                                        <a href="<?php echo add_query_arg( array( 'routine_id' => $routine->id ), wpems_edit_routine_url() ) ?>"><i class="fa fa-pencil"></i></a>
-                                                        <a href="<?php echo wp_nonce_url( add_query_arg( array( 'delete_action' => 'wpems-delete-routine', 'routine_id' => $routine->id ), wpems_edit_routine_url() ), 'wpems-delete-routine' ); ?>" onclick="return confirm('Are you sure?');" ><i class="fa fa-times"></i></a>
-                                                    </span>
+                                                    <?php if ( !current_user_can('student') ): ?>
+                                                        <span class="routine-action">
+                                                            <a href="<?php echo add_query_arg( array( 'routine_id' => $routine->id ), wpems_edit_routine_url() ) ?>"><i class="fa fa-pencil"></i></a>
+                                                            <a href="<?php echo wp_nonce_url( add_query_arg( array( 'delete_action' => 'wpems-delete-routine', 'routine_id' => $routine->id ), wpems_edit_routine_url() ), 'wpems-delete-routine' ); ?>" onclick="return confirm('Are you sure?');" ><i class="fa fa-times"></i></a>
+                                                        </span>
+                                                    <?php endif ?>
                                                 </div>
                                             <?php endif ?>
 

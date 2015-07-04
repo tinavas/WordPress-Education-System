@@ -38,11 +38,17 @@ class WPEMS_Admin {
 
 
     public function add_admin_menu() {
-        $capability = apply_filters( 'wpems_admin_role', 'manage_options' );
+        $capability = apply_filters( 'wpems_admin_role', 'read' );
         add_menu_page( __( 'WP School Mangement', 'wp-ems' ), __( 'School', 'wp-ems' ), $capability, 'wpems-admin-opt', array( $this, 'adming_page_handle' ), 'dashicons-awards', 55 );
-        add_submenu_page( 'wpems-admin-opt', __( 'Students', 'wp-ems' ), __( 'Students', 'wp-ems' ), $capability, 'wpems-students', array( $this, 'load_students_views') );
+
+        if ( !current_user_can( 'student' ) ) {
+            add_submenu_page( 'wpems-admin-opt', __( 'Students', 'wp-ems' ), __( 'Students', 'wp-ems' ), $capability, 'wpems-students', array( $this, 'load_students_views') );
+        }
+
         add_submenu_page( 'wpems-admin-opt', __( 'Teachers', 'wp-ems' ), __( 'Teachers', 'wp-ems' ), $capability, 'wpems-teachers', array( $this, 'load_teachers_views') );
-        add_submenu_page( 'wpems-admin-opt', __( 'Class', 'wp-ems' ), __( 'Class', 'wp-ems' ), $capability, 'wpems-class', array( $this, 'load_class_views') );
+        if ( !current_user_can( 'student' ) ) {
+            add_submenu_page( 'wpems-admin-opt', __( 'Class', 'wp-ems' ), __( 'Class', 'wp-ems' ), $capability, 'wpems-class', array( $this, 'load_class_views') );
+        }
         add_submenu_page( 'wpems-admin-opt', __( 'Subject', 'wp-ems' ), __( 'Subject', 'wp-ems' ), $capability, 'wpems-subject', array( $this, 'load_subject_views') );
         add_submenu_page( 'wpems-admin-opt', __( 'Routine', 'wp-ems' ), __( 'Routine', 'wp-ems' ), $capability, 'wpems-routine', array( $this, 'load_routine_views') );
 

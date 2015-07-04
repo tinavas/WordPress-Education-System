@@ -1,6 +1,6 @@
 <div class="wrap wpems-student-wrap">
 
-    <h2><?php _e( 'Students Mangement', 'wp-ems' ); ?> <a href="<?php echo wpems_add_new_student_url(); ?>" id="wpems-new-student" class="add-new-h2"><?php _e( 'Add New', 'wp-ems' ); ?></a></h2>
+    <h2><?php _e( 'Students Mangement', 'wp-ems' ); ?><a href="<?php echo wpems_add_new_student_url(); ?>" id="wpems-new-student" class="add-new-h2"><?php _e( 'Add New', 'wp-ems' ); ?></a></h2>
 
     <?php if ( isset( $_GET['wpems_message'] ) ): ?>
 
